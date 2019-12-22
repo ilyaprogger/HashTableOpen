@@ -154,12 +154,12 @@ public class HashTableOpen<K, V> implements HashTable<K, V> {
                 retVal = (V) data[index].value;
                 data[index] = null;
             } else {
-                if(data[index].key != null) return null;
-                while ( !data[index].key.equals(key)) {
+                int a = index;
+                while (data[index] == null || !data[index].key.equals(key)) {
                     index++;
                     if (index >= data.length) {
                         index = 0;
-                    }
+                    }if(a==index)return null;
                 }
                 retVal = (V) data[index].value;
                 data[index] = null;

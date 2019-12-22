@@ -10,6 +10,7 @@ public class HashTableTest {
         for (int i = 0; i < 20; i++) {
             q.put(i, i + 2);
         }
+
         assertEquals(3, (int) q.get(1));
         assertEquals(5, (int) q.get(3));
         assertEquals(6, (int) q.get(4));
@@ -30,7 +31,7 @@ public class HashTableTest {
         for (int i = 0; i < 20; i++) {
             q3.put(i + 2, i + 2);
         }
-        assertNull(q3.remove(99));
+       assertNull(q3.remove(99));
         q3.remove(3);
         assertFalse(q3.containsKey(3));
     }
