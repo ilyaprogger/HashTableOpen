@@ -1,20 +1,22 @@
 import java.util.*;
 
-public class HashTableOpen<K, V> implements HashTable<K, V> {
+public class HashTableOpen<K, V> implements Map<K, V> {
     private final float LOAD_FACTOR = 0.75F;
     private final int MULTIPLIER = 2;
     private final int MAX_SIZE = Integer.MAX_VALUE - 3;
+    private Set<K> keySet;
+    private Set<Map.Entry<K, V>> entrySet;
+    private Collection<V> values;
 
     private HashEntry<?, ?>[] data;
     private int size;
     private int threshold;
 
-    HashTableOpen(int initialCapacity, float loadFactor) {
+    public HashTableOpen(int initialCapacity, float loadFactor) {
         if (initialCapacity == 0)
             initialCapacity = 1;
         data = new HashEntry<?, ?>[initialCapacity];
         threshold = (int) (initialCapacity * loadFactor);
-
     }
 
     public HashTableOpen() {
@@ -72,11 +74,11 @@ public class HashTableOpen<K, V> implements HashTable<K, V> {
         return false;
     }
 
-    public boolean contains(Object value) {
+    boolean contains(Integer value) {
         return containsValue(value);
     }
 
-    private boolean containsValue(Object value) {
+    public boolean containsValue(Object value) {
         if (value == null) {
             throw new NullPointerException();
         }
@@ -142,6 +144,10 @@ public class HashTableOpen<K, V> implements HashTable<K, V> {
         }
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
     @Override
     public V remove(Object key) {
@@ -159,7 +165,8 @@ public class HashTableOpen<K, V> implements HashTable<K, V> {
                     index++;
                     if (index >= data.length) {
                         index = 0;
-                    }if(a==index)return null;
+                    }
+                    if (a == index) return null;
                 }
                 retVal = (V) data[index].value;
                 data[index] = null;
@@ -169,6 +176,15 @@ public class HashTableOpen<K, V> implements HashTable<K, V> {
         return retVal;
     }
 
+    @Override
+    public void putAll(Map<? extends K, ? extends V> m) {
+        HashTableOpen entry = (HashTableOpen) m;
+        for (HashEntry<K, V> hashEntry : entry.data) {
+            if (hashEntry != null)
+                put(hashEntry.getKey(), hashEntry.getValue());
+        }
+    }
+
     public void clear() {
         for (int i = 0; i < data.length - 1; i++) {
             if (data[i] != null) {
@@ -176,6 +192,37 @@ public class HashTableOpen<K, V> implements HashTable<K, V> {
                 size--;
             }
         }
+    }
+
+    @Override
+    public Set<K> keySet() {
+        keySet = new HashSet<>();
+        for (int i = 0; i < data.length; i++) {
+            if (data[i] != null)
+                keySet.add((K) data[i].getKey());
+        }
+        return keySet;
+    }
+
+    @Override
+    public Collection<V> values() {
+        values = new HashSet<>();
+        for (int i = 0; i < data.length; i++) {
+            if (data[i] != null)
+                values.add((V) data[i].getValue());
+        }
+        return values;
+    }
+
+    @Override
+    public Set<Map.Entry<K, V>> entrySet() {
+        entrySet = new HashSet<>();
+        HashEntry[] s = data;
+        for (HashEntry hashEntry : s) {
+            if (hashEntry != null)
+                entrySet.add(hashEntry);
+        }
+        return entrySet;
     }
 
     public V get(Object key) {
@@ -202,7 +249,7 @@ public class HashTableOpen<K, V> implements HashTable<K, V> {
         K key;
         V value;
 
-        public HashEntry(K key, V value) {
+        HashEntry(K key, V value) {
             this.key = key;
             this.value = value;
         }
@@ -217,7 +264,7 @@ public class HashTableOpen<K, V> implements HashTable<K, V> {
 
         @Override
         public V setValue(V value) {
-            return null;
+            return this.value = value;
         }
 
 
