@@ -144,10 +144,6 @@ public class HashTableOpen<K, V> implements Map<K, V> {
         }
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 
     @Override
     public V remove(Object key) {

@@ -43,6 +43,7 @@ class HashTableTest {
         m5.put(3,"Pash");
         m5.put(4,"Smash");
         m5.putAll(m4);
+
         assertEquals(m5.toString(),"{1=Hash, 2=Bash, 3=Pash, 4=Smash, end }");
     }
 }
